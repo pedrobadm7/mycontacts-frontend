@@ -30,6 +30,7 @@
                     ".jsx"
                 ]
             }
-        ]
+        ],
+        "import/no-unresolved": "off"
     }
 }
