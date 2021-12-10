@@ -63,20 +63,24 @@ export default function ContactForm({ buttonLabel }) {
         });
     };
 
-    console.log(errors);
+    const getErrorMessageByFieldName = (fieldName) => {
+        return errors.find(({ field }) => field === fieldName)?.message;
+    };
 
     return (
         <S.Form onSubmit={handleSubmit}>
-            <FormGroup>
+            <FormGroup error={getErrorMessageByFieldName("name")}>
                 <Input
+                    error={getErrorMessageByFieldName("name")}
                     placeholder="Nome"
                     value={name}
                     onChange={handleNameChange}
                 />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup error={getErrorMessageByFieldName("email")}>
                 <Input
+                    error={getErrorMessageByFieldName("email")}
                     placeholder="Email"
                     value={email}
                     onChange={handleEmailChange}
