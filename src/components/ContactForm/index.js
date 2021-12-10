@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import FormGroup from "../FormGroup";
 import Input from "../Input";
@@ -8,41 +8,75 @@ import * as S from "./styles";
 
 export default function ContactForm({ buttonLabel }) {
     const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [category, setCategory] = useState("");
+    const [errors, setErrors] = useState([]);
 
-    const emailInput = useRef(null);
+    const handleNameChange = (event) => {
+        setName(event.target.value);
 
-    const handleClick = () => {
-        console.log(emailInput.current.value);
+        if (!event.target.value) {
+            setErrors((prevState) => [
+                ...prevState,
+                { field: "name", message: "Nome é obrigatório" },
+            ]);
+        } else {
+            setErrors((prevState) =>
+                prevState.filter(({ field }) => field !== "name")
+            );
+        }
+    };
+
+    console.log({ errors });
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log({
+            name,
+            email,
+            phone,
+            category,
+        });
     };
 
     return (
-        <S.Form>
-            <button type="button" onClick={handleClick}>
-                Loga emailInput
-            </button>
+        <S.Form onSubmit={handleSubmit}>
             <FormGroup>
                 <Input
                     placeholder="Nome"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={handleNameChange}
                 />
             </FormGroup>
+
             <FormGroup>
                 <Input
-                    defaultValue="pedrobars7a@gmail.com"
                     placeholder="Email"
-                    ref={emailInput}
-                    onChange={(event) => console.log(event.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
             </FormGroup>
+
             <FormGroup>
-                <Input placeholder="Telefone" />
+                <Input
+                    placeholder="Telefone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                />
             </FormGroup>
+
             <FormGroup>
-                <Select>
+                <Select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                >
+                    <option value="">Categoria</option>
                     <option value="instagram">Instagram</option>
+                    <option value="discord">Discord</option>
                 </Select>
             </FormGroup>
+
             <S.ButtonContainer>
                 <Button type="submit">{buttonLabel}</Button>
             </S.ButtonContainer>
