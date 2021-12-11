@@ -41,12 +41,12 @@ export default function ContactForm({ buttonLabel }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log({
-            name,
-            email,
-            phone,
-            category,
-        });
+        // console.log({
+        //     name,
+        //     email,
+        //     phone,
+        //     category,
+        // });
     };
 
     getErrorMessageByFieldName("name");
@@ -73,6 +73,7 @@ export default function ContactForm({ buttonLabel }) {
 
             <FormGroup>
                 <Input
+                    type="tel"
                     placeholder="Telefone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
