@@ -2,6 +2,8 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import isEmailValid from "../../utils/isEmailValid";
+import useErrors from "../../hooks/useErrors";
+
 import FormGroup from "../FormGroup";
 import Input from "../Input";
 import Select from "../Select";
@@ -14,20 +16,16 @@ export default function ContactForm({ buttonLabel }) {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [category, setCategory] = useState("");
-    const [errors, setErrors] = useState([]);
+
+    const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
     const handleNameChange = (event) => {
         setName(event.target.value);
 
         if (!event.target.value) {
-            setErrors((prevState) => [
-                ...prevState,
-                { field: "name", message: "Nome é obrigatório" },
-            ]);
+            setError({ field: "name", message: "O nome é obrigatório" });
         } else {
-            setErrors((prevState) =>
-                prevState.filter(({ field }) => field !== "name")
-            );
+            removeError("name");
         }
     };
 
@@ -35,21 +33,9 @@ export default function ContactForm({ buttonLabel }) {
         setEmail(event.target.value);
 
         if (event.target.value && !isEmailValid(event.target.value)) {
-            const errorAlreadyExists = errors.find(
-                ({ field }) => field === "email"
-            );
-            if (errorAlreadyExists) {
-                return;
-            }
-
-            setErrors((prevState) => [
-                ...prevState,
-                { field: "email", message: "E-mail inválido" },
-            ]);
+            setError({ field: "email", message: "Email inválido" });
         } else {
-            setErrors((prevState) =>
-                prevState.filter(({ field }) => field !== "email")
-            );
+            removeError("email");
         }
     };
 
@@ -63,9 +49,7 @@ export default function ContactForm({ buttonLabel }) {
         });
     };
 
-    const getErrorMessageByFieldName = (fieldName) => {
-        return errors.find(({ field }) => field === fieldName)?.message;
-    };
+    getErrorMessageByFieldName("name");
 
     return (
         <S.Form onSubmit={handleSubmit}>
