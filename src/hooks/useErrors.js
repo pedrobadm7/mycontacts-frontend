@@ -24,7 +24,12 @@ const useError = () => {
         return errors.find(({ field }) => field === fieldName)?.message;
     };
 
-    return { setError, removeError, getErrorMessageByFieldName };
+    return {
+        errors,
+        setError,
+        removeError,
+        getErrorMessageByFieldName,
+    };
 };
 
 export default useError;
