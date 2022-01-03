@@ -20,9 +20,8 @@ const useError = () => {
         );
     };
 
-    const getErrorMessageByFieldName = (fieldName) => {
-        return errors.find(({ field }) => field === fieldName)?.message;
-    };
+    const getErrorMessageByFieldName = (fieldName) =>
+        errors.find(({ field }) => field === fieldName)?.message;
 
     return {
         errors,

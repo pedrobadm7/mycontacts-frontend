@@ -96,8 +96,8 @@ export default function ContactForm({ buttonLabel }) {
                     onChange={(e) => setCategory(e.target.value)}
                 >
                     <option value="">Categoria</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="discord">Discord</option>
+                    <option value="demolay">DeMolay</option>
+                    <option value="macom">Maçom</option>
                 </Select>
             </FormGroup>
 
