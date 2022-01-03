@@ -16,30 +16,35 @@ export default function Home() {
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
-    const filteredContacts = useMemo(() => {
-        return contacts.filter((contact) => {
-            return contact.name
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase());
-        });
-    }, [contacts, searchTerm]);
+    const filteredContacts = useMemo(
+        () =>
+            contacts.filter((contact) =>
+                contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+            ),
+        [contacts, searchTerm]
+    );
 
     useEffect(() => {
-        setIsLoading(true);
+        async function loadContacts() {
+            try {
+                setIsLoading(true);
 
-        fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-            .then(async (response) => {
+                const response = await fetch(
+                    `http://localhost:3001/contacts?orderBy=${orderBy}`
+                );
+
                 await delay(500);
 
                 const json = await response.json();
                 setContacts(json);
-            })
-            .catch((error) => {
-                console.log("error: ", error);
-            })
-            .finally(() => {
                 setIsLoading(false);
-            });
+            } catch (error) {
+                console.log("error", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        loadContacts();
     }, [orderBy]);
 
     function handleToggleOrderBy() {
@@ -78,7 +83,7 @@ export default function Home() {
                     </button>
                 </S.ListHeader>
             ) : (
-                <h3>Ops, nenhum resultado para essa busca...</h3>
+                <p>Ops, nenhum resultado para essa busca...</p>
             )}
 
             {filteredContacts.map((contact) => (
