@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import * as S from "./styles";
 
 import arrow from "../../assets/images/icons/arrow.svg";
@@ -27,7 +27,7 @@ export default function Home() {
         [contacts, searchTerm]
     );
 
-    async function loadContacts() {
+    const loadContacts = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -40,11 +40,11 @@ export default function Home() {
         } finally {
             setIsLoading(false);
         }
-    }
+    }, [orderBy]);
 
     useEffect(() => {
         loadContacts();
-    }, [orderBy]);
+    }, [loadContacts]);
 
     function handleToggleOrderBy() {
         setOrderBy((prevState) => (prevState === "asc" ? "desc" : "asc"));
