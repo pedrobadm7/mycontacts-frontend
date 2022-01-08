@@ -94,6 +94,18 @@ export const EmptyListContainer = styled.div`
     }
 `;
 
+export const SearchNotFondContainer = styled.div`
+    margin-top: 16px;
+    display: flex;
+    align-items: flex-start;
+
+    span {
+        color: ${({ theme }) => theme.colors.gray[200]};
+        margin-left: 24px;
+        word-break: break-word;
+    }
+`;
+
 export const Card = styled.div`
     background: #fff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
