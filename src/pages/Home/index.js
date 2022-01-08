@@ -7,6 +7,7 @@ import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg";
 import trash from "../../assets/images/icons/trash.svg";
 import sad from "../../assets/images/sad.svg";
+import emptyBox from "../../assets/images/empty-box.svg";
 
 import Loader from "../../components/Loader";
 import Button from "../../components/Button";
@@ -31,10 +32,12 @@ export default function Home() {
         try {
             setIsLoading(true);
 
-            const contactList = await ContactsService.listContacts(orderBy);
+            const contactsList = await ContactsService.listContacts(orderBy);
+            // const contactsList = [];
+            // await ContactsService.listContacts(orderBy);
 
             setHasError(false);
-            setContacts(contactList);
+            setContacts(contactsList);
         } catch {
             setHasError(true);
         } finally {
@@ -62,16 +65,28 @@ export default function Home() {
         <S.Container>
             <Loader isLoading={isLoading} />
 
-            <S.InputSearchContainer>
-                <input
-                    value={searchTerm}
-                    type="text"
-                    placeholder="Pesquisar contato"
-                    onChange={handleChangeSearchTerm}
-                />
-            </S.InputSearchContainer>
-            <S.Header hasError={hasError}>
-                {!hasError && (
+            {contacts.length > 0 && !hasError && (
+                <S.InputSearchContainer>
+                    <input
+                        value={searchTerm}
+                        type="text"
+                        placeholder="Pesquisar contato"
+                        onChange={handleChangeSearchTerm}
+                    />
+                </S.InputSearchContainer>
+            )}
+
+            <S.Header
+                justifyContent={
+                    // eslint-disable-next-line no-nested-ternary
+                    hasError
+                        ? "flex-end"
+                        : contacts.length > 0
+                        ? "space-between"
+                        : "center"
+                }
+            >
+                {!!(!hasError && contacts.length > 0) && (
                     <strong>
                         {filteredContacts.length}{" "}
                         {filteredContacts.length === 1
@@ -99,6 +114,17 @@ export default function Home() {
 
             {!hasError && (
                 <>
+                    {contacts.length < 1 && !isLoading && (
+                        <S.EmptyListContainer>
+                            <img src={emptyBox} alt="Empty box" />
+                            <p>
+                                Você ainda não tem nenhum contato cadastrado!
+                                Clique no botão <strong>”Novo contato” </strong>
+                                à cima para cadastrar o seu primeiro!
+                            </p>
+                        </S.EmptyListContainer>
+                    )}
+
                     {filteredContacts.length > 0 && (
                         <S.ListHeader orderBy={orderBy}>
                             <button type="button" onClick={handleToggleOrderBy}>

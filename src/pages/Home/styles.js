@@ -27,8 +27,8 @@ export const InputSearchContainer = styled.div`
 export const Header = styled.header`
     display: flex;
     align-items: center;
-    justify-content: ${({ hasError }) =>
-        hasError ? "flex-end" : "space-between"};
+    justify-content: ${({ justifyContent }) => justifyContent};
+
     margin-top: 32px;
     border-bottom: 2px solid ${({ theme }) => theme.colors.gray[100]};
     padding-bottom: 16px;
@@ -73,6 +73,23 @@ export const ListHeader = styled.header`
             transform: ${({ orderBy }) =>
                 orderBy === "asc" ? "rotate(-180deg)" : "rotate(0deg)"};
             transition: transform 0.2s ease-in;
+        }
+    }
+`;
+
+export const EmptyListContainer = styled.div`
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+        color: ${({ theme }) => theme.colors.gray[200]};
+        text-align: center;
+        margin-top: 8px;
+
+        strong {
+            color: ${({ theme }) => theme.colors.primary.main};
         }
     }
 `;
