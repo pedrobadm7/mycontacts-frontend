@@ -11,6 +11,7 @@ import Select from "../Select";
 import Button from "../Button";
 
 import * as S from "./styles";
+import ContactsService from "../../services/ContactsService";
 
 export default function ContactForm({ buttonLabel }) {
     const [name, setName] = useState("");
@@ -23,7 +24,7 @@ export default function ContactForm({ buttonLabel }) {
 
     const isFormValid = name && errors.length === 0;
 
-    const handleNameChange = (event) => {
+    function handleNameChange(event) {
         setName(event.target.value);
 
         if (!event.target.value) {
@@ -31,9 +32,9 @@ export default function ContactForm({ buttonLabel }) {
         } else {
             removeError("name");
         }
-    };
+    }
 
-    const handleEmailChange = (event) => {
+    function handleEmailChange(event) {
         setEmail(event.target.value);
 
         if (event.target.value && !isEmailValid(event.target.value)) {
@@ -41,21 +42,25 @@ export default function ContactForm({ buttonLabel }) {
         } else {
             removeError("email");
         }
-    };
+    }
 
-    const handlePhoneChange = (event) => {
+    function handlePhoneChange(event) {
         setPhone(formatPhone(event.target.value));
-    };
+    }
 
-    const handleSubmit = (event) => {
+    function handleCategory(event) {
+        setCategory(event.target.value);
+    }
+
+    function handleSubmit(event) {
         event.preventDefault();
-        console.log({
+        ContactsService.createContact({
             name,
             email,
             phone: phone.replace(/\D/g, ""),
             category,
         });
-    };
+    }
 
     getErrorMessageByFieldName("name");
 
@@ -91,10 +96,7 @@ export default function ContactForm({ buttonLabel }) {
             </FormGroup>
 
             <FormGroup>
-                <Select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                >
+                <Select value={category} onChange={handleCategory}>
                     <option value="">Categoria</option>
                     <option value="demolay">DeMolay</option>
                     <option value="macom">Maçom</option>

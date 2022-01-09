@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import HttpClient from "./utils/HttpClient";
 
 class ContactsService {
@@ -7,6 +8,19 @@ class ContactsService {
 
     async listContacts(orderBy = "asc") {
         return this.httpClient.get(`/contacts?orderBy=${orderBy}`);
+    }
+
+    async listCategories() {
+        return this.httpClient.get("/categories");
+    }
+
+    async createContact({ name, email, phone, category_id }) {
+        return this.httpClient.post("/contacts", {
+            name,
+            email,
+            phone,
+            category_id,
+        });
     }
 }
 
