@@ -35,6 +35,10 @@ class ContactsService {
             category_id: contactData.category_id,
         });
     }
+
+    async deleteContact(contactId) {
+        return this.httpClient.delete(`/contacts/${contactId}`);
+    }
 }
 
 export default new ContactsService();
