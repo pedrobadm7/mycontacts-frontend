@@ -38,7 +38,10 @@ export default function EditContact() {
             {!isLoading && (
                 <>
                     <PageHeader title={`Editar ${contact.name}`} />
-                    <ContactForm buttonLabel="Salvar alterações" />
+                    <ContactForm
+                        buttonLabel="Salvar alterações"
+                        request="PUT"
+                    />
                 </>
             )}
         </>
