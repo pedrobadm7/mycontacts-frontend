@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import isEmailValid from "../../utils/isEmailValid";
 import formatPhone from "../../utils/formatPhone";
 import useErrors from "../../hooks/useErrors";
@@ -23,6 +23,7 @@ export default function ContactForm({ buttonLabel, request, contact }) {
     const [categoryId, setCategoryId] = useState([]);
 
     const { id } = useParams();
+    const history = useHistory();
 
     const loadCategories = useCallback(async () => {
         try {
@@ -84,12 +85,21 @@ export default function ContactForm({ buttonLabel, request, contact }) {
             phone: phone.replace(/\D/g, ""),
             category_id: category_id[0],
         };
-        if (request === "POST") {
-            ContactsService.createContact(contactData);
+
+        switch (request) {
+            case "POST":
+                ContactsService.createContact(contactData);
+                break;
+            case "PUT":
+                ContactsService.updateContact(contactData, id);
+                break;
+            default:
+                break;
         }
-        if (request === "PUT") {
-            ContactsService.updateContact(contactData, id);
-        }
+    }
+
+    function goBack() {
+        history.goBack();
     }
 
     getErrorMessageByFieldName("name");
@@ -134,7 +144,7 @@ export default function ContactForm({ buttonLabel, request, contact }) {
             </FormGroup>
 
             <S.ButtonContainer>
-                <Button type="submit" disabled={!isFormValid}>
+                <Button type="submit" disabled={!isFormValid} onClick={goBack}>
                     {buttonLabel}
                 </Button>
             </S.ButtonContainer>
