@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable camelcase */
+import { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import isEmailValid from "../../utils/isEmailValid";
@@ -18,6 +19,23 @@ export default function ContactForm({ buttonLabel }) {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [category, setCategory] = useState("");
+    const [categoryId, setCategoryId] = useState([]);
+
+    const loadCategories = useCallback(async () => {
+        try {
+            const categories = await ContactsService.listCategories();
+            const categoryById = categories.map(({ id }) => id);
+            setCategoryId(categoryById);
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+
+    const category_id = category === "demolay" ? categoryId[0] : categoryId[1];
+
+    useEffect(() => {
+        loadCategories();
+    }, [loadCategories, category]);
 
     const { setError, removeError, getErrorMessageByFieldName, errors } =
         useErrors();
@@ -54,12 +72,17 @@ export default function ContactForm({ buttonLabel }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        ContactsService.createContact({
+
+        const contactData = {
             name,
             email,
             phone: phone.replace(/\D/g, ""),
-            category,
-        });
+            category_id,
+        };
+
+        ContactsService.createContact(contactData);
+
+        console.log({ category_id });
     }
 
     getErrorMessageByFieldName("name");
