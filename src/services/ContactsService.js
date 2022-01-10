@@ -15,8 +15,6 @@ class ContactsService {
     }
 
     async createContact(contactData) {
-        console.log(contactData);
-
         return this.httpClient.post("/contacts", {
             name: contactData.name,
             email: contactData.email,
