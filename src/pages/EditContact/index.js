@@ -6,8 +6,7 @@ import ContactsService from "../../services/ContactsService";
 import Loader from "../../components/Loader";
 
 export default function EditContact() {
-    const [contactId, setContactId] = useState("");
-    const [contact, setContact] = useState("");
+    const [contact, setContact] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     const { id } = useParams();
@@ -15,9 +14,7 @@ export default function EditContact() {
     const loadContactById = useCallback(async () => {
         try {
             setIsLoading(true);
-            const contactById = await ContactsService.listContactsById(
-                contactId
-            );
+            const contactById = await ContactsService.listContactsById(id);
 
             setContact(contactById);
         } catch (error) {
@@ -25,12 +22,11 @@ export default function EditContact() {
         } finally {
             setIsLoading(false);
         }
-    }, [contactId]);
+    }, [id]);
 
     useEffect(() => {
         loadContactById();
-        setContactId(id);
-    }, [loadContactById, id]);
+    }, [loadContactById]);
 
     return (
         <>
@@ -41,6 +37,7 @@ export default function EditContact() {
                     <ContactForm
                         buttonLabel="Salvar alterações"
                         request="PUT"
+                        contact={contact}
                     />
                 </>
             )}

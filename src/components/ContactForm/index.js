@@ -15,11 +15,11 @@ import Button from "../Button";
 import * as S from "./styles";
 import ContactsService from "../../services/ContactsService";
 
-export default function ContactForm({ buttonLabel, request }) {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [category, setCategory] = useState("");
+export default function ContactForm({ buttonLabel, request, contact }) {
+    const [name, setName] = useState("" || contact.name);
+    const [email, setEmail] = useState("" || contact.email);
+    const [phone, setPhone] = useState(formatPhone("" || contact.phone));
+    const [category, setCategory] = useState("" || contact.category_name);
     const [categoryId, setCategoryId] = useState([]);
 
     const { id } = useParams();
@@ -145,4 +145,14 @@ export default function ContactForm({ buttonLabel, request }) {
 ContactForm.propTypes = {
     buttonLabel: PropTypes.string.isRequired,
     request: PropTypes.string.isRequired,
+    contact: PropTypes.objectOf(PropTypes.string),
+};
+
+ContactForm.defaultProps = {
+    contact: {
+        name: "",
+        email: "",
+        phone: "",
+        category_name: "",
+    },
 };
