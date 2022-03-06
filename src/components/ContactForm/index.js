@@ -24,15 +24,14 @@ export default function ContactForm({ buttonLabel }) {
     const loadCategories = useCallback(async () => {
         try {
             const categories = await ContactsService.listCategories();
-            setCategoryId(categories);
+            const categoryById = categories.map(({ id }) => id);
+            setCategoryId(categoryById);
         } catch (error) {
             console.log(error);
         }
     }, []);
 
-    const category_id = categoryId
-        .filter((item) => item.name === category)
-        .map(({ id }) => id);
+    const category_id = category === "demolay" ? categoryId[0] : categoryId[1];
 
     useEffect(() => {
         loadCategories();
@@ -78,10 +77,12 @@ export default function ContactForm({ buttonLabel }) {
             name,
             email,
             phone: phone.replace(/\D/g, ""),
-            category_id: category_id[0],
+            category_id,
         };
 
         ContactsService.createContact(contactData);
+
+        console.log({ category_id });
     }
 
     getErrorMessageByFieldName("name");
@@ -120,8 +121,8 @@ export default function ContactForm({ buttonLabel }) {
             <FormGroup>
                 <Select value={category} onChange={handleCategory}>
                     <option value="">Categoria</option>
-                    <option value="DeMolay">DeMolay</option>
-                    <option value="Maçom">Maçom</option>
+                    <option value="demolay">DeMolay</option>
+                    <option value="macom">Maçom</option>
                 </Select>
             </FormGroup>
 
