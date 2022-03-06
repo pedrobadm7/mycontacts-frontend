@@ -14,14 +14,12 @@ class ContactsService {
         return this.httpClient.get("/categories");
     }
 
-    async createContact(contactData) {
-        console.log(contactData);
-
+    async createContact({ name, email, phone, category_id }) {
         return this.httpClient.post("/contacts", {
-            name: contactData.name,
-            email: contactData.email,
-            phone: contactData.phone,
-            category_id: contactData.category_id,
+            name,
+            email,
+            phone,
+            category_id,
         });
     }
 }
