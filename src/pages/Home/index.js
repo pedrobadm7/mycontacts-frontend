@@ -60,11 +60,6 @@ export default function Home() {
         loadContacts();
     }
 
-    function handleDeleteContact(contactId) {
-        ContactsService.deleteContact(contactId);
-        loadContacts();
-    }
-
     return (
         <S.Container>
             <Loader isLoading={isLoading} />
@@ -168,12 +163,7 @@ export default function Home() {
                                 <Link to={`/edit/${contact.id}`}>
                                     <img src={edit} alt="Edit" />
                                 </Link>
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        handleDeleteContact(contact.id)
-                                    }
-                                >
+                                <button type="button">
                                     <img src={trash} alt="Delete" />
                                 </button>
                             </div>
