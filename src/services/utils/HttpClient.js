@@ -25,6 +25,8 @@ class HttpClient {
     }
 
     async post(path, body) {
+        await delay(500);
+
         const response = await fetch(`${this.baseURL}${path}`, {
             method: "POST",
             headers: {
