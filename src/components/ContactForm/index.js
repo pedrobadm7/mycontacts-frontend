@@ -2,7 +2,6 @@
 import { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { useParams } from "react-router-dom";
 import isEmailValid from "../../utils/isEmailValid";
 import formatPhone from "../../utils/formatPhone";
 import useErrors from "../../hooks/useErrors";
@@ -15,19 +14,16 @@ import Button from "../Button";
 import * as S from "./styles";
 import ContactsService from "../../services/ContactsService";
 
-export default function ContactForm({ buttonLabel, request }) {
+export default function ContactForm({ buttonLabel }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [category, setCategory] = useState("");
     const [categoryId, setCategoryId] = useState([]);
 
-    const { id } = useParams();
-
     const loadCategories = useCallback(async () => {
         try {
             const categories = await ContactsService.listCategories();
-
             setCategoryId(categories);
         } catch (error) {
             console.log(error);
@@ -36,7 +32,7 @@ export default function ContactForm({ buttonLabel, request }) {
 
     const category_id = categoryId
         .filter((item) => item.name === category)
-        .map((item) => item.id);
+        .map(({ id }) => id);
 
     useEffect(() => {
         loadCategories();
@@ -84,12 +80,8 @@ export default function ContactForm({ buttonLabel, request }) {
             phone: phone.replace(/\D/g, ""),
             category_id: category_id[0],
         };
-        if (request === "POST") {
-            ContactsService.createContact(contactData);
-        }
-        if (request === "PUT") {
-            ContactsService.updateContact(contactData, id);
-        }
+
+        ContactsService.createContact(contactData);
     }
 
     getErrorMessageByFieldName("name");
@@ -144,5 +136,4 @@ export default function ContactForm({ buttonLabel, request }) {
 
 ContactForm.propTypes = {
     buttonLabel: PropTypes.string.isRequired,
-    request: PropTypes.string.isRequired,
 };
