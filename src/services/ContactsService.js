@@ -14,10 +14,6 @@ class ContactsService {
         return this.httpClient.get("/categories");
     }
 
-    async listContactsById(id) {
-        return this.httpClient.get(`/contacts/${id}`);
-    }
-
     async createContact(contactData) {
         return this.httpClient.post("/contacts", {
             name: contactData.name,
