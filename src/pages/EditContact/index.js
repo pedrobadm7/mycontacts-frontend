@@ -12,7 +12,7 @@ export default function EditContact() {
 
     const { id } = useParams();
 
-    const loadContactById = useCallback(async () => {
+    const loadContacts = useCallback(async () => {
         try {
             setIsLoading(true);
             const contactById = await ContactsService.listContactsById(
@@ -28,9 +28,9 @@ export default function EditContact() {
     }, [contactId]);
 
     useEffect(() => {
-        loadContactById();
+        loadContacts();
         setContactId(id);
-    }, [loadContactById, id]);
+    }, [loadContacts, id]);
 
     return (
         <>
