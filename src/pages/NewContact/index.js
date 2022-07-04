@@ -14,7 +14,11 @@ export default function NewContact() {
             };
             await ContactsService.createContact(contact);
 
-            toast({ type: "success", text: "Contato criado com sucesso!" });
+            toast({
+                type: "success",
+                text: "Contato criado com sucesso!",
+                duration: 3000,
+            });
         } catch {
             toast({
                 type: "danger",
