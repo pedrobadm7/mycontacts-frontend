@@ -70,6 +70,10 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
         event.preventDefault();
 
         setIsSubmitting(true);
+        setName("");
+        setEmail("");
+        setPhone("");
+        setCategoryId("");
 
         await onSubmit({
             name,
