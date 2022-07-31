@@ -22,6 +22,8 @@ export default function Home() {
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
 
     const filteredContacts = useMemo(
         () =>
@@ -62,18 +64,32 @@ export default function Home() {
         loadContacts();
     }
 
+    function handleDeleteContact(contact) {
+        setIsDeleteModalVisible(true);
+        setContactBeingDeleted(contact);
+    }
+
+    function handleCloseDeleteModal() {
+        setIsDeleteModalVisible(false);
+    }
+
+    function handleConfirmDeleteContact() {
+        console.log(contactBeingDeleted.id);
+    }
+
     return (
         <S.Container>
             <Loader isLoading={isLoading} />
 
             <Modal
                 danger
-                title="Tem certeza que deseja remover o contato 'Pedro Barros'?"
+                visible={isDeleteModalVisible}
+                title={`Tem certeza que deseja remover o contato "${contactBeingDeleted?.name}"?"`}
                 confirmLabel="Deletar"
-                onCancel={() => alert("Cancelou")}
-                onConfirm={() => alert("Confirmou")}
+                onCancel={handleCloseDeleteModal}
+                onConfirm={handleConfirmDeleteContact}
             >
-                <p>teste</p>
+                <p>Esta ação não poderá ser desfeita</p>
             </Modal>
 
             {contacts.length > 0 && !hasError && (
@@ -175,7 +191,10 @@ export default function Home() {
                                 <Link to={`/edit/${contact.id}`}>
                                     <img src={edit} alt="Edit" />
                                 </Link>
-                                <button type="button">
+                                <button
+                                    type="button"
+                                    onClick={() => handleDeleteContact(contact)}
+                                >
                                     <img src={trash} alt="Delete" />
                                 </button>
                             </div>
