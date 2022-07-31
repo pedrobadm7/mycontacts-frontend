@@ -27,6 +27,7 @@ export default function EditContact() {
                 toast({
                     type: "danger",
                     text: "Contato não encontrado",
+                    duration: 3000,
                 });
             }
         }
