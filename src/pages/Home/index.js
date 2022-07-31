@@ -12,6 +12,8 @@ import magnifierQuestion from "../../assets/images/magnifier-question.svg";
 
 import Loader from "../../components/Loader";
 import Button from "../../components/Button";
+import Modal from "../../components/Modal";
+
 import ContactsService from "../../services/ContactsService";
 
 export default function Home() {
@@ -63,6 +65,16 @@ export default function Home() {
     return (
         <S.Container>
             <Loader isLoading={isLoading} />
+
+            <Modal
+                danger
+                title="Tem certeza que deseja remover o contato 'Pedro Barros'?"
+                confirmLabel="Deletar"
+                onCancel={() => alert("Cancelou")}
+                onConfirm={() => alert("Confirmou")}
+            >
+                <p>teste</p>
+            </Modal>
 
             {contacts.length > 0 && !hasError && (
                 <S.InputSearchContainer>
